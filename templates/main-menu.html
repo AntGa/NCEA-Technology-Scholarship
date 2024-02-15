@@ -1,0 +1,225 @@
+<!doctype html>
+
+<html lang="en" dir="ltr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title> Anton's Test Project </title>
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script defer src="../static/sidebar.js"></script>
+<!-- Boxicons For Premium Icons -->
+<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../static/stylying.css">
+
+<!-- DATATABLES API-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo_content">
+        <div class="logo">
+            <i class='bx bxs-leaf' ></i>
+            <div style="padding-left: 10px;" class="logo_name">Inventory Project</div>
+        </div>
+        <i class='bx bx-menu' id="btn" ></i>
+    </div>
+    <ul style="margin:0;" class="navigation_list">
+        <li>
+            <a href="/dashboard" style="background: #fff; color: black" class="override";>
+                <i class='bx bxs-dashboard'></i>
+                <span class="link_name">Dashboard</span>
+            </a>
+        <span class="tooltip">Dashboard</span>
+        </li>
+        <li>
+            <a href="/products">
+                <i class='bx bx-leaf' ></i>
+                <span class="link_name">Products</span>
+            </a>
+        <span class="tooltip">Products</span> 
+        </li>
+        <li>
+            <a href="/sales">
+                <i class='bx bxs-dollar-circle'></i>
+                <span class="link_name">Sales</span>
+            </a>
+            <span class="tooltip">sales</span>  
+        </li>
+        <li>
+            <a href="/expenses">
+                <i class='bx bx-money-withdraw'></i>
+                <span class="link_name">Expenses</span>
+            </a>
+            <span class="tooltip">Expenses</span>
+        </li>
+        <li>
+            <a href="/locations">
+                <i class='bx bx-current-location' ></i>
+                <span class="link_name">Locations</span>
+            </a>
+            <span class="tooltip">Locations</span> 
+        </li>
+        <li>
+            <a href="/scanbarcode">
+                <i class='bx bx-scan'></i>
+                <span class="link_name">Quick Sale</span>
+            </a>
+            <span class="tooltip">Quick Sale</span>
+        </li>
+        <li>
+            <a href="/logout">
+                <i class='bx bx-log-out'></i>
+                <span class="link_name">Logout</span>
+            </a>
+            <span class="tooltip">logout</span>
+        </li>
+       
+    </ul>
+</div>
+
+
+<div class="main-content container-fluid">
+    
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="col-content dash-transactions"">
+                    <div class="content-top-title">
+                        Total Revenue:
+                    </div>
+                    <a href="/sales" class="content-top-content">
+                        ${{totalsalesprice}}
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="col-content dash-transactions">
+                    <div class="content-top-title">
+                        Total Sales:
+                    </div>
+                    <a  href="/sales" class="content-top-content">
+                        {{totalsales}} transactions
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="col-content dash-transactions"">
+                    <div class="content-top-title">
+                        Latest Location:
+                    </div>
+                    <a  href="/locations" class="content-top-content">
+                        {{locationtotal}}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="col-content dash-transactions"">
+                    <div class="recent-transactions-title">
+                        Recent Transactions:
+                    </div>
+                    <div class="recent-transaction-table">
+                        <table id="salestable" class="product-table fluid hidden">
+                            <thead>
+                                <tr>
+                                    <th width="35%">Sale Name</th>
+                                    <th width="20%">Unit Price</th>
+                                    <th width="20%">Quantity</th>
+                                    <th width="25%">Date</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in salesrows %}
+                            <tr>
+                                <td>
+                                    <a href="/products">    
+                                            {{row[0]}}
+                                    </a>
+                                </td>
+                                <td>${{row[1]}}</td>
+                                <td>{{row[2]}}</td>
+                                <td>{{row[3]}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div align="right"class="add-product-container">
+                        <a href="/sales" id="add_product_modal" class="add-product-btn">Add Sale</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-content dash-transactions"">
+                    <div class="current-inventory-title">
+                        Current Inventory
+                    </div>
+                    <div class="recent-transaction-table">
+                        <table id="producttable" class="product-table fluid hidden">
+                            <thead>
+                                <tr>
+                                    <th width="40%">Product Name</th>
+                                    <th width="30%">Unit Price</th>
+                                    <th width="30%">Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in productrows2 %}
+                            <tr>
+                                <td>
+                                    <a href="/products">    
+                                            {{row[0]}}
+                                    </a>
+                                </td>
+                                <td>${{row[1]}}</td>
+                                <td>{{row[2]}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div align="right" class="add-product-container">
+                        <a href="/products" id="add_product_modal" class="add-product-btn">Add Product </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            
+        
+        <div class="main-footer">AntGa's Inventory Project</div>
+</div>
+
+
+
+
+<script src="../static/sidebar.js"></script>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('#salestable').DataTable({
+        "lengthMenu": [10],
+        });
+        
+        $('#producttable').DataTable({
+        "lengthMenu": [10],
+        });
+
+
+
+    });
+</script>
+
+</body>
+</html>

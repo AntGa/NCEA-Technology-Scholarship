@@ -1,0 +1,24 @@
+        <form action="/addexpense" method="POST" class="form" id="form">
+                <div class="form-items">
+                    <label class="form-label" for="product">expense Name:</label>
+                    <input class="form-input" type="text" id="expense-name" name="expense-name" placeholder="Enter Product Name:" required>
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-items">
+                    <label class="form-label" for="product-price">expense Price:</label>
+                    <input class="form-input" type="number" id="expense-price" name="expense-price" placeholder="Enter Product Price:" step=".01" min="0">
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-items">
+                    <label class="form-label"for="product-quanitity">expense Quantity:</label>
+                    <input class="form-input" type="number" id="expense-quanitity" name="expense-quanitity" placeholder="Enter Product Quantity:">
+                    <div class="form-error"></div>
+                </div>
+                <div class="form-items">
+                    <label class="form-label" for="product">expense Description:</label>
+                    <textarea maxlength="250" class="form-input" id="expense-description" name="expense-description" placeholder="Enter a description of the product. (Max 250 chars:"></textarea>
+                    <div class="form-error"></div>
+                </div>
+                <input class="modal-submit-btn" type="submit" value="Submit">
+            </form>
+

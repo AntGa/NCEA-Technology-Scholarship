@@ -1,0 +1,51 @@
+
+ <!--Display current task details as a form that the user can enter. -->
+<form action="/ajaxUpdateLocations" method="POST">
+    <table class="table table-striped table-bordered">
+        <tr>
+           <!-- Headers for table -->
+            <th width="50%">Location Name</th>
+            <th width="50%">Description</th>
+        </tr>
+        <!--display data -->
+        {% for row in viewlocationList %}
+        <tr>
+            <td>
+                <input class="form-input" name="location-name" id="location-name" type="text" placeholder="Enter New Name:" data-sb-validations="required" value="{{row[0]}}">
+            </td>
+            <td>    
+                <input class="form-input" name="location-description" id=location-description" type="text" placeholder="Enter extra notes:" data-sb-validations="required" value="{{row[3]}}">
+            </td>
+        </tr>
+        <input class="form-control" name="locationId" id="locationtId" type="hidden" value='{{row[2]}}'/>
+        {% endfor %}
+    </table>
+    <table id="producttable" class="product-table fluid hidden">
+        <thead>
+            <tr>
+                <th width="40%">Sale Name</th>
+                <th width="25%">Unit Price</th>
+                <th width="20%">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in saleList %}
+            <tr>
+                <td>
+                    <a href="/products">    
+                            {{row[0]}}
+                    </a>
+                </td>
+                <td>${{row[1]}}</td>
+                <td>{{row[2]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    <div align="right">
+         <!--delete button -->
+    <button class="btn btn-danger btn-lg delete_task" value="deleteButton" name="deleteButton" id="deleteButton" type="submit">Delete</button>
+      <!--Update Button --> 
+    <button class="btn btn-primary btn-lg update_task" value="updateButton" name="updateButton" id="updateButton" type="submit">Update</button>
+    </div>
+</form>

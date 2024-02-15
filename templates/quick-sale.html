@@ -1,0 +1,140 @@
+<!doctype html>
+
+<html lang="en" dir="ltr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title> Anton's Test Project </title>
+
+
+
+<!-- Bootstrap JS and CSS-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script defer src="../static/sidebar.js"></script>
+<!-- Boxicons For Premium Icons -->
+<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../static/stylying.css">
+
+<!-- DATATABLES API-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <i class='bx bxs-leaf' ></i>
+                <div style="padding-left: 10px;" class="logo_name">Inventory Project</div>
+            </div>
+            <i class='bx bx-menu' id="btn" ></i>
+        </div>
+        <ul style="margin:0;" class="navigation_list">
+            <li>
+                <a href="/dashboard">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+            <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="/products">
+                    <i class='bx bx-leaf' ></i>
+                    <span class="link_name">Products</span>
+                </a>
+            <span class="tooltip">Products</span> 
+            </li>
+            <li>
+                <a href="/sales">
+                    <i class='bx bxs-dollar-circle'></i>
+                    <span class="link_name">Sales</span>
+                </a>
+                <span class="tooltip">sales</span>  
+            </li>
+            <li>
+                <a href="/expenses" style="background: #fff; color: black" class="override";>
+                    <i class='bx bx-money-withdraw'></i>
+                    <span class="link_name">Expenses</span>
+                </a>
+                <span class="tooltip">Expenses</span>
+            </li>
+            <li>
+                <a href="/locations">
+                    <i class='bx bx-current-location' ></i>
+                    <span class="link_name">Locations</span>
+                </a>
+                <span class="tooltip">Locations</span> 
+            </li>   
+            
+                <a href="/scanbarcode">
+                    <i class='bx bx-scan'></i>
+                    <span class="link_name">Quick Sale</span>
+                </a>
+                <span class="tooltip">Quick Sale</span>
+            </li>
+            <li>
+                <a href="/logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="link_name">Logout</span>
+                </a>
+                <span class="tooltip">logout</span>
+            </li>
+       
+        </ul>
+    </div>
+    <!-- Sales Table-->
+ <!--Display current task details as a form that the user can enter. -->
+<div class="main-content">
+    <div class="product-top-header">Create A Quick Sale</div>
+    <div align="center" class="product-table-container">
+        <form action="/create_sale" method="POST">
+            <table class="table table-striped table-bordered">
+                <tr>
+                <!-- Headers for table -->
+
+                    <th >Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                </tr>
+                <!--display data -->
+                {% for row in viewProductList %}
+                <tr>
+                    <td>
+                        <input class="form-input" name="product-name" id="product-name" type="text" placeholder="Enter New Name:" data-sb-validations="required" value="{{row[0]}}" readonly>
+                    </td>
+                    <td>
+                        <input class="form-input" type="number" id="product-price" name="product-price" placeholder="Enter Product Price:" value="{{row[1]}}" readonly>
+                    </td>
+                    <td>
+                        <input class="form-input" type="number" id="product-quantity" name="product-quantity" placeholder="Enter Product Quantity:" value="{{row[2]}}">
+                    </td>
+                    <td>    
+                        <input class="form-input" name="sale-description" id="sale-description" type="text" placeholder="Enter extra notes:" data-sb-validations="required">
+                    </td>
+                    <td>
+                        <select class="form-select" name="product-location" id="product-location">
+                            {% for location in locations %}
+                            <option value="{{location[0]}}">{{location[0]}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <input class="form-control" name="productId" id="productId" type="hidden" value='{{row[4]}}'/>
+                </tr>
+                {% endfor %}
+            </table>
+            <div align="right">
+            <!--Update Button --> 
+            <button class="btn btn-primary btn-lg update_task" value="updateButton" name="updateButton" id="updateButton" type="submit">Sell</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../static/sidebar.js"></script>
+</html>

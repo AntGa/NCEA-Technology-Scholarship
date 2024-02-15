@@ -1,0 +1,215 @@
+<!doctype html>
+
+<html lang="en" dir="ltr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title> Anton's Test Project </title>
+
+
+
+<!-- Bootstrap JS and CSS-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script defer src="../static/sidebar.js"></script>
+<!-- Boxicons For Premium Icons -->
+<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="../static/stylying.css">
+
+<!-- DATATABLES API-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <i class='bx bxs-leaf' ></i>
+                <div style="padding-left: 10px;" class="logo_name">Inventory Project</div>
+            </div>
+            <i class='bx bx-menu' id="btn" ></i>
+        </div>
+        <ul style="margin:0;" class="navigation_list">
+            <li>
+                <a href="/dashboard">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+            <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="/products" style="background: #fff; color: black" class="override";>
+                    <i class='bx bx-leaf' ></i>
+                    <span class="link_name">Products</span>
+                </a>
+            <span class="tooltip">Products</span> 
+            </li>
+            <li>
+                <a href="/sales">
+                    <i class='bx bxs-dollar-circle'></i>
+                    <span class="link_name">Sales</span>
+                </a>
+                <span class="tooltip">sales</span>  
+            </li>
+            <li>
+                <a href="/expenses">
+                    <i class='bx bx-money-withdraw'></i>
+                    <span class="link_name">Expenses</span>
+                </a>
+                <span class="tooltip">Expenses</span>
+            </li>
+            <li>
+                <a href="/locations">
+                    <i class='bx bx-current-location' ></i>
+                    <span class="link_name">Locations</span>
+                </a>
+                <span class="tooltip">Locations</span> 
+            </li>
+            <li>
+                <a href="/scanbarcode">
+                    <i class='bx bx-scan'></i>
+                    <span class="link_name">Quick Sale</span>
+                </a>
+                <span class="tooltip">Quick Sale</span>
+            </li>    
+            <li>
+                <a href="/logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="link_name">Logout</span>
+                </a>
+                <span class="tooltip">logout</span>
+            </li>
+           
+        </ul>
+    </div>
+   
+   
+   
+    <!-- Product Table-->
+<div class="products-main-content">
+    <div class="product-top-header">Products</div>
+    <div align="center" class="product-table-container">
+        <table id="producttable" class="product-table fluid hidden">
+            <thead>
+                <tr>
+                    <th width="40%">Product Name</th>
+                    <th width="25%">Unit Price</th>
+                    <th width="20%">Quantity</th>
+                    <th width="15%">More Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in productrows %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>${{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>
+                        <button type="submit" data-id= '{{row[4]}}' class="view-product more-info-btn" data-toggle="tooltip" data-placement="top" title="Click to see Products Details or Edit them!" >View Details</button> 
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    
+    <div align="right" class="add-product-container">
+        <button id="add_product_modal" class="add-product-btn">Add Product </button>
+    </div>
+
+  <!-- modal javascript -->
+  <script type='text/javascript'>
+    $(document).ready(function(){
+            /**Button for Adding Products**/
+        $('#add_product_modal').click(function(){
+            $.ajax({
+                url: '/ajaxaddproducts',
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                    $('#addProductModal').modal('show'); 
+                }
+            });
+        });
+
+        $('.view-product').click(function(){
+            var productid = $(this).data('id');
+            $.ajax({
+                url: '/ajaxViewProduct',
+                type: 'post',
+                data: {productid: productid},
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                    $('#ViewProductModal').modal('show' ); 
+                }
+            });
+        });
+            /**Button for editing Tasks**/
+        $('.update_task').click(function(){
+            $.ajax({
+                url: '/ajaxUpdateTask',
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                    $('#updateTaskModal').modal('show'); 
+                }
+            });
+        });
+        /**Button for deleting Tasks**/
+        $('.delete_task').click(function(){
+            $.ajax({
+                url: '/ajaxDeleteTask',
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                }
+            });
+        });
+
+
+        $('#producttable').DataTable({
+        "lengthMenu": [ 5, 10, 15, 20, -1 ],
+        });
+    });
+
+    </script>
+<!-- Add Product Modal-->
+<div class="modal fade" id="addProductModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Product</h4>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VIEW PRODUCTS MODAL-->
+<div class="modal fade" id="ViewProductModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Products</h4>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Trade Mark footer-->
+    <div class="product-footer">AntGa's Inventory Project</div>
+</div>
+<script src="../static/sidebar.js"></script>
+</html>
